@@ -2,44 +2,42 @@ package com.pharmacie.gestionproduits.controller;
 
 import com.pharmacie.gestionproduits.model.Product;
 import com.pharmacie.gestionproduits.repository.ProductRepository;
-import com.pharmacie.gestionproduits.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class ProductController {
+
     @Autowired
-    private ProductService productService;
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
-    //add product
+    // Ajouter un produit
     @PostMapping("/product")
-    public Product addProduct(@RequestBody Product product){
+    public Product SaveProduct(@RequestBody Product product) {
         return productRepository.save(product);
     }
-    //View all products
+
+    // Lister tous les produits
     @GetMapping("/products")
-public List<Product> getProduct(String name){
-    return productRepository.findAll();
-}
-    // Update products
-    @PutMapping("/product")
-    public Product updateProduct(@RequestBody Product product){
-       return productRepository.save(product);
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
-    // Delete product
-    @DeleteMapping("/product/{id}")
-    public void  deleteProduct(@PathVariable Long id){
+    // Mettre à jour un produit
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        product.setId(id);
+        return productRepository.save(product);
+    }
+
+
+    // Supprimer un produit
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
         productRepository.deleteById(id);
     }
-
 }
