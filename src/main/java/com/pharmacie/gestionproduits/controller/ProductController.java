@@ -29,8 +29,7 @@ public class ProductController {
 
     // Mettre à jour un produit
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        product.setId(id);
+    public Product updateProduct(@RequestBody Product product) {
         return productRepository.save(product);
     }
 
